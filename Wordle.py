@@ -10,25 +10,65 @@ import random
 from WordleDictionary import FIVE_LETTER_WORDS
 from WordleGraphics import WordleGWindow, N_COLS, N_ROWS
 
-secretWord = random.choice(FIVE_LETTER_WORDS)
+secretWord = random.choice(FIVE_LETTER_WORDS).upper()
+winCount = 0
+guessCount = []
 
 def wordle():
     
-    
+
+    def delete_action():
+        
+        gw.set_square_letter(1,5,"")
 
     def enter_action(s):
-
+        global winCount
+        global secretWord
          # gw.show_message("You have to implement this method.")
         currentRow= gw.get_current_row()
+        spellCheckResult = spellCheck(currentRow)
 
-        if spellCheck(currentRow) == True:
+
+        if spellCheckResult == True:
+            correctCount = colorLetters(currentRow)
             gw.set_current_row(currentRow + 1)
+
+            if correctCount == 5:
+                winCount = winCount + 1
+                guessCount.append(currentRow)
+                averageGuess = round((sum(guessCount)/len(guessCount)), 2)
+                gw.show_message("Games won: " + str(winCount) + " Average guesses: " + str(averageGuess))
+                for row in range(0, N_ROWS):
+                    for col in range(0,N_COLS):
+                        gw.set_key_color(gw.get_square_letter(row,col), "#DDDDDD")
+                        gw.set_square_letter(row,col,"")
+                        
+
+                gw.set_current_row(0)
+                secretWord = random.choice(FIVE_LETTER_WORDS).upper()
+
 
    
 
     gw = WordleGWindow()
     gw.add_enter_listener(enter_action)
+    # gw.add_delete_listener(delete_action)
 
+#Color Letter funciton
+    def colorLetters(currentRow):
+        correctCount = 0
+        for col in range(0, N_COLS):
+            if gw.get_square_letter(currentRow, col) == secretWord[col]:
+                gw.set_key_color(gw.get_square_letter(currentRow, col),"#66BB66")
+                correctCount += 1
+
+            elif gw.get_square_letter(currentRow,col) in secretWord:
+                gw.set_key_color(gw.get_square_letter(currentRow, col),"#999999")
+                
+            else:
+                pass
+
+        return correctCount
 
 #Spell check function
     def spellCheck(currentRow):
@@ -50,10 +90,12 @@ def wordle():
             for col in range(0, N_COLS):
                 gw.set_square_letter(currentRow,col, "")
             gw.set_current_row(currentRow)
-            gw.show_message("You fool! This is no word!")
+            
+            gw.show_message("You fool! This is no word!" + secretWord)
+            
   
 
-        
+
         
 
 

@@ -164,6 +164,7 @@ class WordleGWindow:
         self._message = create_message()
         self._keys = create_keyboard()
         self._enter_listeners = [ ]
+        self._delete_listeners = [ ]
         root.bind("<Key>", key_action)
         root.bind("<ButtonPress-1>", press_action)
         root.bind("<ButtonRelease-1>", release_action)
@@ -201,6 +202,9 @@ class WordleGWindow:
 
     def add_enter_listener(self, fn):
         self._enter_listeners.append(fn)
+    
+    def add_delete_listener(self, fn):
+        self._delete_listeners.append(fn)
 
     def show_message(self, msg, color="Black"):
         self._message.set_text(msg, color)
