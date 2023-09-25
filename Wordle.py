@@ -10,9 +10,10 @@ import random
 from WordleDictionary import FIVE_LETTER_WORDS
 from WordleGraphics import WordleGWindow, N_COLS, N_ROWS
 
+secretWord = random.choice(FIVE_LETTER_WORDS)
+
 def wordle():
-    # secretWord = random.choice(FIVE_LETTER_WORDS)
-    # gw = WordleGWindow()
+    
     
 
     def enter_action(s):
@@ -33,17 +34,22 @@ def wordle():
     def spellCheck(currentRow):
         
         word = ""
+
         #Grabs all the letters from each column and makes a word
         for col in range(0, N_COLS):
             word += gw.get_square_letter(currentRow, col)
+
         #Converts the word to lowercase to match the dictionary
-        word = word.lower()        
+        word = word.lower() 
+
         #Checks if the entered word is found inside the dictionary, then either moves to a new line, or displays error
         
         if word in FIVE_LETTER_WORDS:
-            return True
-            
+            return True            
         else:
+            for col in range(0, N_COLS):
+                gw.set_square_letter(currentRow,col, "")
+            gw.set_current_row(currentRow)
             gw.show_message("You fool! This is no word!")
   
 
