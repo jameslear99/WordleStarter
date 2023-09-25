@@ -172,6 +172,22 @@ class WordleGWindow:
         self._col = 0
         atexit.register(start_event_loop)
 
+#ADDING A BUTTON
+        self.reset_button = tkinter.Button(root, text="Reset Game", command=self.reset_game)
+        self.reset_button.pack()
+    def reset_game(self):
+    # Code to reset the game goes here
+        self.set_current_row(0)
+        for row in range(0, 6):
+            for col in range(0,5):
+                letter = self.get_square_letter(row, col)
+                if letter != ' ' and letter in self._keys:
+                    self.set_key_color(letter, "#DDDDDD")
+                self.set_square_color(row, col, "#FFFFFF")
+                self.set_square_letter(row, col, "")
+        
+
+
     def get_square_letter(self, row, col):
         return self._grid[row][col].get_letter()
 
@@ -208,6 +224,7 @@ class WordleGWindow:
 
     def show_message(self, msg, color="Black"):
         self._message.set_text(msg, color)
+
 
 
 class WordleSquare:

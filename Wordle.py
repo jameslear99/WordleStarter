@@ -23,11 +23,13 @@ def wordle():
 
     def enter_action(s):
         global winCount
-        global secretWord
+        global secretWord    
          # gw.show_message("You have to implement this method.")
         currentRow= gw.get_current_row()
         spellCheckResult = spellCheck(currentRow)
 
+        if currentRow == N_ROWS - 1:
+            gw.show_message("GAME OVER! YOU SUCK!")
 
         if spellCheckResult == True:
             correctCount = colorLetters(currentRow)
@@ -35,23 +37,27 @@ def wordle():
 
             if correctCount == 5:
                 winCount = winCount + 1
-                guessCount.append(currentRow)
+                guessCount.append(currentRow + 1)
                 averageGuess = round((sum(guessCount)/len(guessCount)), 2)
-                gw.show_message("Games won: " + str(winCount) + " Average guesses: " + str(averageGuess))
-                for row in range(0, N_ROWS):
-                    for col in range(0,N_COLS):
-                        gw.set_key_color(gw.get_square_letter(row,col), "#DDDDDD")
-                        gw.set_square_letter(row,col,"")
+                gw.show_message("You win! Games won: " + str(winCount) + " Average guesses: " + str(averageGuess))
+                secretWord = random.choice(FIVE_LETTER_WORDS).upper()
+
+
+
+
+        
                         
 
-                gw.set_current_row(0)
-                secretWord = random.choice(FIVE_LETTER_WORDS).upper()
+
+                
+                
 
 
    
 
     gw = WordleGWindow()
     gw.add_enter_listener(enter_action)
+    
     # gw.add_delete_listener(delete_action)
 
 #Color Letter funciton
@@ -59,11 +65,17 @@ def wordle():
         correctCount = 0
         for col in range(0, N_COLS):
             if gw.get_square_letter(currentRow, col) == secretWord[col]:
+                gw.set_square_color(currentRow,col,"#66BB66")
                 gw.set_key_color(gw.get_square_letter(currentRow, col),"#66BB66")
                 correctCount += 1
-
+           
             elif gw.get_square_letter(currentRow,col) in secretWord:
+                gw.set_key_color(gw.get_square_letter(currentRow, col),"#CCBB66")
+                gw.set_square_color(currentRow,col,"#CCBB66") 
+
+            elif gw.get_square_letter(currentRow,col) not in secretWord:
                 gw.set_key_color(gw.get_square_letter(currentRow, col),"#999999")
+                gw.set_square_color(currentRow,col,"#999999")
                 
             else:
                 pass
