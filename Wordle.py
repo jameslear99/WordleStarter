@@ -6,6 +6,7 @@ BE SURE TO UPDATE THIS COMMENT WHEN YOU WRITE THE CODE.
 """
 #note for change.
 import random
+import PySimpleGUI as sg
 
 from WordleDictionary import FIVE_LETTER_WORDS
 from WordleGraphics import WordleGWindow, N_COLS, N_ROWS
@@ -42,43 +43,49 @@ def wordle():
                 gw.show_message("You win! Games won: " + str(winCount) + " Average guesses: " + str(averageGuess))
                 secretWord = random.choice(FIVE_LETTER_WORDS).upper()
 
-
-
-
-        
-                        
-
-
-                
-                
-
-
-   
+    newcolors = str(input("do you want special colors? y/n"))
 
     gw = WordleGWindow()
     gw.add_enter_listener(enter_action)
     
-    # gw.add_delete_listener(delete_action)
-
+    gw.add_delete_listener(delete_action)
+    
 #Color Letter funciton
     def colorLetters(currentRow):
         correctCount = 0
         for col in range(0, N_COLS):
-            if gw.get_square_letter(currentRow, col) == secretWord[col]:
-                gw.set_square_color(currentRow,col,"#66BB66")
-                gw.set_key_color(gw.get_square_letter(currentRow, col),"#66BB66")
-                correctCount += 1
-           
-            elif gw.get_square_letter(currentRow,col) in secretWord:
-                gw.set_key_color(gw.get_square_letter(currentRow, col),"#CCBB66")
-                gw.set_square_color(currentRow,col,"#CCBB66") 
+            if newcolors == "y":
+                if gw.get_square_letter(currentRow, col) == secretWord[col]:
+                    gw.set_square_color(currentRow,col,"#00008B")
+                    gw.set_key_color(gw.get_square_letter(currentRow, col),"#00008B")
+                    correctCount += 1
+            
+                elif gw.get_square_letter(currentRow,col) in secretWord:
+                    gw.set_key_color(gw.get_square_letter(currentRow, col),"#ADD8E6")
+                    gw.set_square_color(currentRow,col,"#ADD8E6") 
 
-            elif gw.get_square_letter(currentRow,col) not in secretWord:
-                gw.set_key_color(gw.get_square_letter(currentRow, col),"#999999")
-                gw.set_square_color(currentRow,col,"#999999")
-                
+                elif gw.get_square_letter(currentRow,col) not in secretWord:
+                    gw.set_key_color(gw.get_square_letter(currentRow, col),"#999999")
+                    gw.set_square_color(currentRow,col,"#999999")
+                    
+                else:
+                    pass
             else:
-                pass
+                if gw.get_square_letter(currentRow, col) == secretWord[col]:
+                    gw.set_square_color(currentRow,col,"#66BB66")
+                    gw.set_key_color(gw.get_square_letter(currentRow, col),"#66BB66")
+                    correctCount += 1
+            
+                elif gw.get_square_letter(currentRow,col) in secretWord:
+                    gw.set_key_color(gw.get_square_letter(currentRow, col),"#CCBB66")
+                    gw.set_square_color(currentRow,col,"#CCBB66") 
+
+                elif gw.get_square_letter(currentRow,col) not in secretWord:
+                    gw.set_key_color(gw.get_square_letter(currentRow, col),"#999999")
+                    gw.set_square_color(currentRow,col,"#999999")
+                    
+                else:
+                    pass
 
         return correctCount
 
@@ -103,7 +110,7 @@ def wordle():
                 gw.set_square_letter(currentRow,col, "")
             gw.set_current_row(currentRow)
             
-            gw.show_message("You fool! This is no word!" + secretWord)
+            gw.show_message("You fool! This is no word!")
             
   
 

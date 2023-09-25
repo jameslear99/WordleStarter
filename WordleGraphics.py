@@ -185,8 +185,6 @@ class WordleGWindow:
                     self.set_key_color(letter, "#DDDDDD")
                 self.set_square_color(row, col, "#FFFFFF")
                 self.set_square_letter(row, col, "")
-        
-
 
     def get_square_letter(self, row, col):
         return self._grid[row][col].get_letter()
