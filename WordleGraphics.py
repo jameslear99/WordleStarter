@@ -9,6 +9,8 @@ import atexit
 import math
 import time
 import tkinter
+from tkinter import colorchooser
+
 
 # Constants
 
@@ -60,6 +62,25 @@ MESSAGE_Y = TOP_MARGIN + BOARD_HEIGHT + MESSAGE_SEP
 
 class WordleGWindow:
     """This class creates the Wordle window."""
+    ##this stuff that I added (change_color and show_color_menu) allows us to change colors
+    def change_color(self, color_name, description):
+        new_color = colorchooser.askcolor(title=f"Choose color for {description}")[1]
+        
+        if new_color:
+            setattr(self, color_name, new_color)
+
+    def show_color_menu(self):
+
+        self.change_color('CORRECT_COLOR', 'Correct Letters')
+        self.change_color('PRESENT_COLOR', 'Misplaced Letters')
+        self.change_color('MISSING_COLOR', 'Missing Letters')
+        self.change_color('UNKNOWN_COLOR', 'Undetermined Letters')
+        self.change_color('KEY_COLOR', 'Key Color')
+
+
+        # Update all keys
+        for key in self._keys.values():
+            key.set_color(self.KEY_COLOR)
 
     def __init__(self):
         """Creates the Wordle window."""
@@ -170,6 +191,9 @@ class WordleGWindow:
         self._row = 0
         self._col = 0
         atexit.register(start_event_loop)
+        #this lets us change colors (KEEP THIS CODE PLS!!!!!!)
+        self.change_colors_button = tkinter.Button(root, text="Change Colors", command=self.show_color_menu)
+        self.change_colors_button.pack()
 
     def get_square_letter(self, row, col):
         return self._grid[row][col].get_letter()
@@ -181,7 +205,12 @@ class WordleGWindow:
         return self._grid[row][col].get_color()
 
     def set_square_color(self, row, col, color):
-        self._grid[row][col].set_color(color)
+        if color == "CORRECT_COLOR":
+            self._grid[row][col].set_color(CORRECT_COLOR)
+        if color == "PRESENT_COLOR":
+            self._grid[row][col].set_color(PRESENT_COLOR)
+        if color == "MISSING_COLOR":
+            self._grid[row][col].set_color(MISSING_COLOR)
 
     def get_key_color(self, ch):
         return self._keys[ch].get_color()

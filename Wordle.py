@@ -9,7 +9,8 @@ import random
 
 from WordleDictionary import FIVE_LETTER_WORDS
 from WordleGraphics import WordleGWindow, N_COLS, N_ROWS
-from WordleGraphics import CORRECT_COLOR, PRESENT_COLOR, MISSING_COLOR
+#from WordleGraphics import CORRECT_COLOR, PRESENT_COLOR, MISSING_COLOR
+
 
 def wordle():
     secretWord = random.choice(FIVE_LETTER_WORDS)
@@ -22,25 +23,26 @@ def wordle():
             user_word = getUserWord(currentRow)
             feedback = getFeedback(user_word, secretWord)
             
-            gw.set_current_row(currentRow + 1)
-            
             for col, status in enumerate(feedback):
                 if status == 'C':  # Correct letter and position
-                    gw.set_square_color(currentRow, col, CORRECT_COLOR)
-                elif status == 'P':  # Correct letter, wrong position
-                    gw.set_square_color(currentRow, col, PRESENT_COLOR)
+                    gw.set_square_color(currentRow, col, "CORRECT_COLOR")
+                elif status == 'P':  # Correct letter but wrong position
+                    gw.set_square_color(currentRow, col, "PRESENT_COLOR")
                 else:  # Incorrect letter
-                    gw.set_square_color(currentRow, col, MISSING_COLOR)
+                    gw.set_square_color(currentRow, col, "MISSING_COLOR")
                     
             
             if user_word == secretWord:
                 gw.show_message("You win!")
                 return
             
-            # Is the game over?
+            # Here we check to see if the game is over
             if currentRow == N_ROWS - 1:
                 gw.show_message("Game Over!")
                 return
+            
+            gw.set_current_row(currentRow + 1)
+
 
     def getUserWord(currentRow):
         word = ""
